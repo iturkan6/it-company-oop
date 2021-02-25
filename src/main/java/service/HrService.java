@@ -38,5 +38,10 @@ public class HrService {
     public void save() throws IOException {
         daoHr.write();
     }
+
+    public void toDismiss(Employer employer) {
+        daoHr.delete(employer);
+    }
+
 }
 
