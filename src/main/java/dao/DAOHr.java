@@ -43,18 +43,19 @@ public class DAOHr implements DAO<Employer> {
 
     }
 
+    public void downloadInfo() throws IOException {
+        read();
+    }
+
 
     public void write() throws IOException {
         File employers = new File("Employers.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(employers));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(employers, true));
         String line;
-        for (int i = 0; i < employersAll.size(); i++) {
-
-        }
         for (Employer employer : employersAll) {
-            line = String.format("%d, %s, %s, %s, %s, %s, %d.\n",
+            line = String.format("%d,%s,%s,%s,%s,%s,%d,%s\n",
                     employer.getId(), employer.getLogin(), employer.getPassword(), employer.getName(),
-                    employer.getSurname(), employer.getDepartment(), employer.getExperience());
+                    employer.getSurname(), employer.getDepartment(), employer.getExperience(), employer.getStatus());
             bw.write(line);
             bw.write("\n");
         }
@@ -67,13 +68,11 @@ public class DAOHr implements DAO<Employer> {
         BufferedReader reader = new BufferedReader(new FileReader(employers));
         String line;
         while ((line = reader.readLine()) != null) {
-            String[] info = line.trim().split("\\.");
-            String[] employerInfo = info[0].trim().split(",");
-            for (Employer employer : employersAll) {
-                employersAll.add(new Employer(Integer.parseInt(employerInfo[0]), employerInfo[1],
-                        employerInfo[2], employerInfo[3], employerInfo[4], employerInfo[5],
-                        Integer.parseInt(employerInfo[6]), employerInfo[7]));
-            }
+            String[] employerInfo = line.split(",");
+            employersAll.add(new Employer(Integer.parseInt(employerInfo[0]), employerInfo[1],
+                    employerInfo[2], employerInfo[3], employerInfo[4], employerInfo[5],
+                    Integer.parseInt(employerInfo[6]), employerInfo[7]));
+
         }
     }
 }
