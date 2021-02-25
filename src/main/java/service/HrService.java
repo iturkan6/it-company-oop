@@ -12,6 +12,7 @@ public class HrService {
     public DAOHr daoHr = new DAOHr();
 
     public HrService() throws IOException {
+
     }
 
     public List<Employer> getAll() {
@@ -20,11 +21,15 @@ public class HrService {
 
     public boolean toTest(String department, int experience, int test1, int test2, int test3) {
         if (department.trim().toLowerCase().equals("frontend")) {
-            return experience == 3 && test1 == 2 && test2 == 1 && test3 == 2;
+            return experience >= 3 && test1 == 2 && test2 == 1 && test3 == 2;
         } else if (department.trim().toLowerCase().equals("backend")) {
-            return experience == 5 && test1 == 3 && test2 == 4 && test3 == 2;
+            return experience >= 5 && test1 == 2 && test2 == 1 && test3 == 2;
         }
         return false;
+    }
+
+    public void information() throws IOException {
+        daoHr.downloadInfo();
     }
 
     public void toHire(String department, int experience,
@@ -59,6 +64,11 @@ public class HrService {
 
     public void toDismiss(Employer employer) {
         daoHr.delete(employer);
+    }
+
+    public List<Employer> getByCredentials(String login, String password) {
+
+        return daoHr.getAllBy(e -> e.getLogin().equals(login)  && e.getPassword().equals(password));
     }
 
 }
