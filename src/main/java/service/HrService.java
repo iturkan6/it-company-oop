@@ -4,6 +4,8 @@ import dao.DAOHr;
 import entity.Employer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HrService {
@@ -33,6 +35,17 @@ public class HrService {
             return true;
         }
         return false;
+    }
+
+    public List<Employer> getInfo(String name, String surname, String department){
+        List<Employer> employers = getAll();
+        if(employers.size() == 0){
+            System.out.println("No such employer");
+        }else {
+           return daoHr.getAllBy(e -> e.getName().equals(name)
+                    && e.getSurname().equals(surname) && e.getDepartment().equals(department));
+        }
+        return Collections.emptyList();
     }
 
     public void save() throws IOException {
