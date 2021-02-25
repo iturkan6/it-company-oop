@@ -4,9 +4,9 @@ import dao.DAOHr;
 import entity.Employer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class HrService {
     public DAOHr daoHr = new DAOHr();
@@ -27,25 +27,30 @@ public class HrService {
         return false;
     }
 
-    public boolean toHire(String department, int experience, int test1, int test2, int test3,
-                          String name, String surname, String status, String login, String password) {
-        if (toTest(department, experience, test1, test2, test3)) {
-            daoHr.create(new Employer(getAll().size() + 1, login, password, name, surname,
-                    department, experience, status));
-            return true;
-        }
-        return false;
+    public void toHire(String department, int experience,
+                       String name, String surname, String status, String login, String password) {
+        daoHr.create(new Employer(getAll().size() + 1, login, password, name, surname,
+                department, experience, status));
     }
 
-    public List<Employer> getInfo(String name, String surname, String department){
+    public List<Employer> getInfoByName(String name, String surname, String department) {
         List<Employer> employers = getAll();
-        if(employers.size() == 0){
+        if (employers.size() == 0) {
             System.out.println("No such employer");
-        }else {
-           return daoHr.getAllBy(e -> e.getName().equals(name)
+        } else {
+            return daoHr.getAllBy(e -> e.getName().equals(name)
                     && e.getSurname().equals(surname) && e.getDepartment().equals(department));
         }
         return Collections.emptyList();
+    }
+
+    public Optional<Employer> getInfoById(int id) {
+        if (getAll().size() == 0) {
+            System.out.println("No such Employer");
+        } else {
+            return daoHr.get(id);
+        }
+        return Optional.empty();
     }
 
     public void save() throws IOException {
