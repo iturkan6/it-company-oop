@@ -1,40 +1,52 @@
+import controller.BackendController;
+import controller.DirectorController;
+import controller.FrontendController;
 import controller.HrController;
+import io.MainMenu;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
+        MainMenu menu = new MainMenu();
         HrController hrController = new HrController();
+        DirectorController directorController = new DirectorController();
+        BackendController backendController = new BackendController();
+        FrontendController frontendController = new FrontendController();
         boolean exit = true;
         while (exit) {
-            System.out.println("..............Welcome to our application.............\n" +
-                    "              Please choose the action:\n" +
-                    "1. Come in\n                                3. Pass a test\n" +
-                    "2. Exit");
-            int number = scanner.nextInt();
-            if (number == 1) {
-                switch (hrController.toCheckAccess()) {
-                    case "hr":
-                        hrController.toSeeMessage();
-                        break;
-                    case "backend":
-                        break;
-                    case "frontend":
-                        break;
-                    case "director":
-                        break;
-                }
-            } else if (number == 3) {
-                hrController.toHire();
-            } else if (number == 2) {
-                hrController.toSave();
-                exit = false;
+            menu.displayMenu();
+            int number = menu.checkInt();
+            switch (number) {
+                case 1:
+                    switch (hrController.toCheckAccess()) {
+                        case "hr":
+                            hrController.toSeeMessage();
+                            break;
+                        case "backend":
+                            backendController.toSeeMessage();
+                            break;
+                        case "frontend":
+                            frontendController.toSeeMessage();
+                            break;
+                        case "director":
+                            directorController.toSeeMessage();
+                            break;
+                    }
+                    break;
+                case 3:
+                    hrController.toHire();
+                    break;
+                case 2:
+                    hrController.toSave();
+                    exit = false;
+                    break;
+                default:
+                    menu.print("Please enter number from 1 to 3");
+                    break;
             }
-
-
         }
-
     }
 }
