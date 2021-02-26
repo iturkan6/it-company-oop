@@ -1,76 +1,106 @@
 package controller;
 
-import service.HrService;
+import io.MainMenu;
+import service.AdminService;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class HrController {
     boolean exit = true;
-    HrService hrService = new HrService();
+    AdminService adminService = new AdminService();
+    MainMenu menu = new MainMenu();
 
     public HrController() throws IOException {
     }
 
-    Scanner scanner = new Scanner(System.in);
-
-
-    public void toHire(){
-
-        System.out.println("Please write the department you want to be hired");
-        String department = scanner.nextLine().toLowerCase().trim();
-        System.out.println("How much experience you have?");
-        int exp = scanner.nextInt();
-        System.out.println("Please take a short test to to check your skills. Choose a correct number.\nQuestion1. " +
-                "What is the best programming language?\n1. Python\n2. Java");
-        int test1 = scanner.nextInt();
-        System.out.println("Question2. How are you?\n 1.Fine\n2.So so");
-        int test2 = scanner.nextInt();
-        System.out.println("Do you love caterpillars?\n1.No\n2.Yes");
-        int test3 = scanner.nextInt();
-        if (hrService.toTest(department, exp, test1, test2, test3)) {
-            scanner.nextLine();
-            System.out.println("Congratulations! You are hired.\n Please enter your details.\n Enter your name:");
-            String name = scanner.nextLine().trim().toLowerCase();
-            System.out.println("Your surname:");
-            String surname = scanner.nextLine().trim().toLowerCase();
-            System.out.println("Create your login");
-            String login = scanner.nextLine().trim().toLowerCase();
-            System.out.println("Create your password");
-            String password = scanner.nextLine().trim().toLowerCase();
-            hrService.toHire(department, exp, name, surname, "online", login, password);
-        } else {
-            System.out.println("Unfortunately you cant pass our exam");
+    public void toHire() {
+        menu.print("Please choose the department you want to be hired: \n");
+        menu.print("1. Front End                              2. Back End");
+        int department = menu.checkInt();
+        String dep = department == 1 ? "frontend" : "backend";
+        menu.printLn("How much experience you have?");
+        int exp = menu.checkInt();
+        menu.print("Please take a short test to to check your skills. Choose a correct number.\n");
+        switch (department) {
+            case 1:
+                if (testFrontend(exp)) {
+                    createEmployer(exp, dep);
+                } else {
+                    menu.print("Unfortunately you cant pass our exam");
+                }
+                break;
+            case 2:
+                if (testBackend(exp)) {
+                    createEmployer(exp, dep);
+                } else {
+                    menu.print("Unfortunately you cant pass our exam");
+                }
+                break;
+            default:
+                System.out.println("We dont have such department");
         }
+
     }
+
+    public boolean testBackend(int experience) {
+        menu.print("Question1. What is the best programming language?\n1. Python\n2. Java");
+        int test1 = menu.checkInt();
+        menu.print("Question2. How are you?\n1. Fine\n2. So so");
+        int test2 = menu.checkInt();
+        menu.print("Do you love caterpillars?\n1. No\n2. Yes");
+        int test3 = menu.checkInt();
+        return experience >= 5 && test1 == 2 && test2 == 1 && test3 == 2;
+    }
+
+    public boolean testFrontend(int experience) {
+        menu.print("Question1. What is the best programming language?\n1. JS\n2. Css");
+        int test1 = menu.checkInt();
+        menu.print("Question2. How are you?\n1. Amazing\n2. Bad");
+        int test2 = menu.checkInt();
+        menu.print("Do you love animals?\n1. No\n2. Yes");
+        int test3 = menu.checkInt();
+        return experience >= 2 && test1 == 1 && test2 == 1 && test3 == 2;
+    }
+
+    public void createEmployer(int experience, String department) {
+        menu.print("Congratulations! You are hired.\n Please enter your details.\n Enter your name:");
+        String name = menu.readLn();
+        menu.print("Your surname:");
+        String surname = menu.readLn();
+        menu.print("Create your login");
+        String login = menu.readLn();
+        menu.print("Create your password");
+        String password = menu.readLn();
+        adminService.toHire(department, experience, name, surname, "online", login, password);
+    }
+
 
     public void getInfoByName() {
-        System.out.println("Enter name, surname and department of employer");
-        String name = scanner.nextLine().trim().toLowerCase();
-        String surname = scanner.nextLine().trim().toLowerCase();
-        String department = scanner.nextLine().trim().toLowerCase();
-        System.out.println(hrService.getInfoByName(name, surname, department).toString());
-    }
-    public void info() throws IOException {
-        hrService.information();
+        menu.print("Enter name of employer: ");
+        String name = menu.readLn();
+        menu.print("Enter surname of employer: ");
+        String surname = menu.readLn();
+        menu.print("Enter department in which employer work: ");
+        String department = menu.readLn();
+        System.out.println(adminService.getInfoByName(name, surname, department).toString());
     }
 
     public void getInfoById() {
-        System.out.println("Enter id of employer");
-        int id = scanner.nextInt();
-        System.out.println(hrService.getInfoById(id).toString());
+        menu.print("Enter id of employer: ");
+        int id = menu.checkInt();
+        menu.print(adminService.getInfoById(id).toString());
     }
 
     public void toSave() throws IOException {
-        hrService.save();
+        adminService.save();
     }
 
     public String toCheckAccess() {
-        System.out.println("Type your login");
-        String login = scanner.nextLine().toLowerCase().trim();
-        System.out.println("Type your password");
-        String password = scanner.nextLine().toLowerCase().trim();
-        return hrService.getByCredentials(login, password).get(0).getDepartment();
+        menu.print("Type your login: ");
+        String login = menu.readLn();
+        menu.print("Type your password");
+        String password = menu.readLn();
+        return adminService.getByCredentials(login, password).get(0).getDepartment();
     }
 
     public void toSeeMessage() {
@@ -79,13 +109,14 @@ public class HrController {
             System.out.println("..............Welcome to HR Department.............\n" +
                     "              Please choose the action:\n" +
                     "1. To see the inform about employer          2. Exit\n");
-            int num = scanner.nextInt();
+            int num = menu.checkInt();
             switch (num) {
                 case 1:
                     while (true) {
-                        System.out.println("Choose the number:\n1.Get information bt ID\n" +
-                                "2.Get information by Name and Surname\n3.Return to main menu");
-                        int i = scanner.nextInt();
+                        menu.print("                Choose the number:                \n");
+                        menu.print("1.Get information bt ID      3.Return to main menu\n");
+                        menu.print("2.Get information by Name and Surname             \n");
+                        int i = menu.checkInt();
                         if (i == 1) {
                             getInfoById();
                         } else if (i == 2) {
