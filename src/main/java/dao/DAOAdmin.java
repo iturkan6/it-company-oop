@@ -9,12 +9,12 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class DAOHr implements DAO<Employer> {
+public class DAOAdmin implements DAO<Employer> {
 
 
     private final ArrayList<Employer> employersAll = new ArrayList<>();
 
-    public DAOHr() throws IOException {
+    public DAOAdmin() throws IOException {
         read();
     }
 
@@ -43,11 +43,6 @@ public class DAOHr implements DAO<Employer> {
 
     }
 
-    public void downloadInfo() throws IOException {
-        read();
-    }
-
-
     public void write() throws IOException {
         File employers = new File("Employers.txt");
         BufferedWriter bw = new BufferedWriter(new FileWriter(employers, true));
@@ -64,7 +59,6 @@ public class DAOHr implements DAO<Employer> {
 
     private void read() throws IOException {
         File employers = new File("Employers.txt");
-//        employers.createNewFile();
         BufferedReader reader = new BufferedReader(new FileReader(employers));
         String line;
         while ((line = reader.readLine()) != null) {
@@ -72,7 +66,6 @@ public class DAOHr implements DAO<Employer> {
             employersAll.add(new Employer(Integer.parseInt(employerInfo[0]), employerInfo[1],
                     employerInfo[2], employerInfo[3], employerInfo[4], employerInfo[5],
                     Integer.parseInt(employerInfo[6]), employerInfo[7]));
-
         }
     }
 }
