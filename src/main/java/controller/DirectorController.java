@@ -17,7 +17,7 @@ public class DirectorController {
         menu.print("Please write the department in which you accept the employee: ");
         String department = menu.readLn();
         menu.print("How much experience employer have? Type here -> ");
-        int experience = menu.checkInt();
+        int experience = menu.readInt();
         menu.print("Enter name: ");
         String name = menu.readLn();
         menu.print("Enter surname: ");
@@ -43,7 +43,7 @@ public class DirectorController {
 
     public void getInfoById() {
         menu.print("Enter id of employer");
-        int id = menu.checkInt();
+        int id = menu.readInt();
         System.out.println(service.getInfoById(id).toString());
     }
 
@@ -61,7 +61,7 @@ public class DirectorController {
 
     public void toDismiss(){
         menu.print("Enter ID of employer");
-        int id = menu.checkInt();
+        int id = menu.readInt();
         service.deleteById(id);
     }
 
@@ -72,14 +72,14 @@ public class DirectorController {
             menu.print("Please choose the action:                                    \n");
             menu.print("1. See the inform about employer(s)    3. Delete employer\n");
             menu.print("2. Hire new employer                   4. Return to main menu\n");
-            int num = menu.checkInt();
+            int num = menu.readInt();
             switch (num) {
                 case 1:
                     while (true) {
                         menu.print("                  Choose the number:\n");
                         menu.print("1.Get information bt ID       2.Get information by name and surname \n");
                         menu.print("3.Return to main menu\n");
-                        int i = menu.checkInt();
+                        int i = menu.readInt();
                         if (i == 1) {
                             getInfoById();
                         } else if (i == 2) {

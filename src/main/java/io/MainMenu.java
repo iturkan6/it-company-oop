@@ -3,7 +3,7 @@ package io;
 import java.util.Scanner;
 
 public class MainMenu implements Menu{
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void print(String line) {
@@ -20,11 +20,11 @@ public class MainMenu implements Menu{
         return scanner.nextLine().toLowerCase().trim();
     }
 
-    public int checkInt(){
+    public int readInt() {
         while (true){
             try {
                 return Integer.parseInt(readLn());
-            }catch (Exception exception){
+            } catch (Exception exception){
                 print("Invalid input. Try to enter number.");
             }
         }

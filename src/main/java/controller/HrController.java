@@ -16,10 +16,10 @@ public class HrController {
     public void toHire() {
         menu.print("Please choose the department you want to be hired: \n");
         menu.print("1. Front End                              2. Back End");
-        int department = menu.checkInt();
+        int department = menu.readInt();
         String dep = department == 1 ? "frontend" : "backend";
         menu.printLn("How much experience you have?");
-        int exp = menu.checkInt();
+        int exp = menu.readInt();
         menu.print("Please take a short test to to check your skills. Choose a correct number.\n");
         switch (department) {
             case 1:
@@ -44,21 +44,21 @@ public class HrController {
 
     public boolean testBackend(int experience) {
         menu.print("Question1. What is the best programming language?\n1. Python\n2. Java");
-        int test1 = menu.checkInt();
+        int test1 = menu.readInt();
         menu.print("Question2. How are you?\n1. Fine\n2. So so");
-        int test2 = menu.checkInt();
+        int test2 = menu.readInt();
         menu.print("Do you love caterpillars?\n1. No\n2. Yes");
-        int test3 = menu.checkInt();
+        int test3 = menu.readInt();
         return experience >= 5 && test1 == 2 && test2 == 1 && test3 == 2;
     }
 
     public boolean testFrontend(int experience) {
         menu.print("Question1. What is the best programming language?\n1. JS\n2. Css");
-        int test1 = menu.checkInt();
+        int test1 = menu.readInt();
         menu.print("Question2. How are you?\n1. Amazing\n2. Bad");
-        int test2 = menu.checkInt();
+        int test2 = menu.readInt();
         menu.print("Do you love animals?\n1. No\n2. Yes");
-        int test3 = menu.checkInt();
+        int test3 = menu.readInt();
         return experience >= 2 && test1 == 1 && test2 == 1 && test3 == 2;
     }
 
@@ -87,7 +87,7 @@ public class HrController {
 
     public void getInfoById() {
         menu.print("Enter id of employer: ");
-        int id = menu.checkInt();
+        int id = menu.readInt();
         menu.print(adminService.getInfoById(id).toString());
     }
 
@@ -109,14 +109,14 @@ public class HrController {
             System.out.println("..............Welcome to HR Department.............\n" +
                     "              Please choose the action:\n" +
                     "1. To see the inform about employer          2. Exit\n");
-            int num = menu.checkInt();
+            int num = menu.readInt();
             switch (num) {
                 case 1:
                     while (true) {
                         menu.print("                Choose the number:                \n");
                         menu.print("1.Get information bt ID      3.Return to main menu\n");
                         menu.print("2.Get information by Name and Surname             \n");
-                        int i = menu.checkInt();
+                        int i = menu.readInt();
                         if (i == 1) {
                             getInfoById();
                         } else if (i == 2) {

@@ -4,12 +4,8 @@ import controller.FrontendController;
 import controller.HrController;
 import io.MainMenu;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
         MainMenu menu = new MainMenu();
         HrController hrController = new HrController();
         DirectorController directorController = new DirectorController();
@@ -18,7 +14,7 @@ public class Main {
         boolean exit = true;
         while (exit) {
             menu.displayMenu();
-            int number = menu.checkInt();
+            int number = menu.readInt();
             switch (number) {
                 case 1:
                     switch (hrController.toCheckAccess()) {

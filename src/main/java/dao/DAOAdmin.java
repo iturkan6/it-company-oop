@@ -45,14 +45,13 @@ public class DAOAdmin implements DAO<Employer> {
 
     public void write() throws IOException {
         File employers = new File("Employers.txt");
-        BufferedWriter bw = new BufferedWriter(new FileWriter(employers, true));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(employers));
         String line;
         for (Employer employer : employersAll) {
             line = String.format("%d,%s,%s,%s,%s,%s,%d,%s\n",
                     employer.getId(), employer.getLogin(), employer.getPassword(), employer.getName(),
                     employer.getSurname(), employer.getDepartment(), employer.getExperience(), employer.getStatus());
             bw.write(line);
-            bw.write("\n");
         }
         bw.close();
     }

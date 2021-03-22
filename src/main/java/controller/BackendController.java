@@ -24,7 +24,7 @@ public class BackendController {
             menu.print("Please choose the action:                                 \n");
             menu.print("1. Write application                3. To take a break\n");
             menu.print("2. Create API                       4. Return to main menu\n");
-            int num = menu.checkInt();
+            int num = menu.readInt();
             switch (num) {
                 case 1:
                     writeApp();
